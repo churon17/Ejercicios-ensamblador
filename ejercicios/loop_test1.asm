@@ -1,36 +1,49 @@
+;Ejercicio de los Asteriscos invertidos.
+;Resultado
+;*
+;**
+;***
+;****
+;*****
+;******
+;*******
+;********
 section .data
     asterisco db "*" 
     len_asterisco equ $-asterisco
     nueva_linea db 10, ''
 
+section .bss
+    auxiliar resb 2
+    auxiliar2 resb 2
+    auxiliar3 resb 2
+
 section .text
     global _start
 
 _start:
-    mov ecx, 20 ;Es porque va a recorrer 20 veces hasta llegar al punto 1.
-    mov ebx, 20
-
-
-l1: ;Se ejecuta diractamente.
-    push ecx  ; se envia la referencia de ecx a pila En pila tengo 20
-    ;push ebx
+    mov ecx, 20 
+    mov ebx, 1
+    mov [auxiliar], ecx
+    mov [auxiliar2], ebx
+    
+l1:
+    mov [auxiliar], ecx
     call imprimir_enter
 
-    mov ecx, 20 
-    push ebx 
 
-
-l2: ;Se ejecuta diractamente.
-    push ecx  ; se envia la referencia de ecx a pila En pila tengo 20
+l2:
     call imprimir_asterisco
-    pop ecx
+    mov ecx, [auxiliar2]
     loop l2
-    ;*************************
-    pop ecx
-    pop ebx 
+    mov ecx, [auxiliar]
     loop l1
+    ;mov [auxiliar2]
 
-    mov eax, 1 
+
+
+salir: 
+    mov eax, 1
     int 80h
 
 imprimir_asterisco:
@@ -39,6 +52,9 @@ imprimir_asterisco:
     mov ecx, asterisco
     mov edx, 1
     int 80h
+  ;  mov ecx, [auxiliar2]
+   ; inc ecx
+   ; mov [auxiliar2], ecx
     ret ;Se lo utiliza cuando existe una funcion llamada call y es retornar al ultimo punto.
 
 imprimir_enter:
@@ -48,3 +64,5 @@ imprimir_enter:
     mov edx, 1
     int 80h
     ret ;Se lo utiliza cuando existe una funcion llamada call y es retornar al ultimo punto.
+
+
